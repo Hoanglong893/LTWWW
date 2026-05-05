@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form sản phẩm</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container" style="max-width:600px;">
+
+    <div class="topbar">
+        <div class="left">
+            <h2 th:text="${product.id == null ? '➕ Thêm sản phẩm' : '✏️ Sửa sản phẩm'}"></h2>
+        </div>
+        <div class="right">
+            <a th:href="@{/admin/products}" class="btn btn-secondary">← Quay lại</a>
+        </div>
+    </div>
+
+    <form th:action="@{/admin/products/save}" th:object="${product}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <div class="form-group">
+            <label for="name">Tên sản phẩm <span style="color:red;">*</span></label>
+            <input type="text" id="name" th:field="*{name}" placeholder="Nhập tên sản phẩm">
+            <span class="error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Giá (VNĐ) <span style="color:red;">*</span></label>
+            <input type="number" id="price" th:field="*{price}" placeholder="Nhập giá" min="1">
+            <span class="error-text" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Số lượng <span style="color:red;">*</span></label>
+            <input type="number" id="quantity" th:field="*{quantity}" placeholder="Nhập số lượng" min="0">
+            <span class="error-text" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Mô tả</label>
+            <textarea id="description" th:field="*{description}" placeholder="Mô tả sản phẩm..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">Link ảnh (URL)</label>
+            <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="https://...">
+        </div>
+
+        <div class="form-group">
+            <label for="category">Danh mục <span style="color:red;">*</span></label>
+            <select id="category" th:field="*{category}">
+                <option value="">-- Chọn danh mục --</option>
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:text="${c.name}"></option>
+            </select>
+            <span class="error-text" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success" style="width:100%;padding:12px;">
+            💾 Lưu sản phẩm
+        </button>
+    </form>
+
+</div>
+
+</body>
+</html>
